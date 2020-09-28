@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Match;
 use App\Models\Participation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ParticipationController extends Controller
 {
@@ -35,7 +37,29 @@ class ParticipationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $infoHomeTeam = DB::table('teams')->where('name',request('home-team'))->get();
+        $infoAwayTeam = DB::table('teams')->where('name',request('away-team'))->get();
+
+        $matchToSave = new Match();
+        $matchToSave->date = request('match-date');
+        $matchToSave->slug = $infoHomeTeam[0]->slug.$infoAwayTeam[0]->slug;
+        $matchToSave->save();
+
+        $participationHomeTeam = new Participation();
+        $participationHomeTeam->match_id = $matchToSave->id;
+        $participationHomeTeam->team_id = $infoHomeTeam[0]->id;
+        $participationHomeTeam->goals = request('home-team-goals');
+        $participationHomeTeam->is_home = 1;
+        $participationHomeTeam->save();
+
+        $participationAwayTeam = new Participation();
+        $participationAwayTeam->match_id = $matchToSave->id;
+        $participationAwayTeam->team_id = $infoAwayTeam[0]->id;
+        $participationAwayTeam->goals = request('away-team-goals');
+        $participationAwayTeam->is_home = 0;
+        $participationAwayTeam->save();
+
+        return redirect('/');
     }
 
     /**

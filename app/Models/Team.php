@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+      'name',
+      'slug'
+    ];
+
+    public function matches()
+    {
+        return $this->belongsTo(Match::class, 'participations');
+    }
 }

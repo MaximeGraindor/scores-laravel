@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ParticipationController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [DashboardController::class, 'index']);
+Route::get('team/create', [TeamController::class, 'index']);
+Route::post('/', [TeamController::class, 'store']);
+route::post('/', [ParticipationController::class, 'store']);

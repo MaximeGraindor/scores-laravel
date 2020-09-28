@@ -13,6 +13,6 @@ class ParticipationSeeder extends Seeder
      */
     public function run()
     {
-        //
+
     }
 }

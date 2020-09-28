@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTeamRequest;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
+        return view('team.create');
     }
 
     /**
@@ -33,9 +34,12 @@ class TeamController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTeamRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        Team::create($validatedData);
+
+        return redirect('/');
     }
 
     /**
