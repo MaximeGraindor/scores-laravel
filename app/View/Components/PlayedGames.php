@@ -6,14 +6,19 @@ use Illuminate\View\Component;
 
 class PlayedGames extends Component
 {
+
+    public $currentDate;
+    public $matches;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct( $currentDate, $matches)
     {
-        //
+        $this->currentDate = $currentDate;
+        $this->matches = $matches;
     }
 
     /**

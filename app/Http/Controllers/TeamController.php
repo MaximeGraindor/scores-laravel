@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTeamRequest;
+use App\Models\Participation;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Intervention\Image\Image;
 
 class TeamController extends Controller
 {
@@ -15,7 +18,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        return view('team.create');
+        ///
     }
 
     /**
@@ -23,9 +26,10 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($imageName = null)
     {
-        //
+        $teams = Team::All();
+        return view('team.create', compact('teams', 'imageName'));
     }
 
     /**
@@ -36,8 +40,19 @@ class TeamController extends Controller
      */
     public function store(StoreTeamRequest $request)
     {
+
+        if($request->hasFile('logo')){
+            $logo = Image::make($request->hasFile('logo'));
+            $logo->resize(100,100);
+            return $logo;
+            $newName = $request->logo->hashName();
+            $request->logo->storeAs('images', $newName)->resize(100,200);
+        }
+
         $validatedData = $request->validated();
+        $validatedData['logo'] = $request->logo->hashName();
         Team::create($validatedData);
+
 
         return redirect('/');
     }
@@ -61,7 +76,9 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        //
+
+        return $team;
+        return view('team.update', compact('team'));
     }
 
     /**
@@ -73,7 +90,15 @@ class TeamController extends Controller
      */
     public function update(Request $request, Team $team)
     {
-        //
+        return $team;
+        //$extractTeam = substr(strrchr($request->getRequestUri(), "/"), 1);
+            $team->update(
+                ['name'=>$request->name],
+                ['slug'=>$request->slug],
+                ['logo'=>""]
+            );
+
+        return redirect('/team/create');
     }
 
     /**

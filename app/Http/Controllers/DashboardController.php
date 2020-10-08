@@ -3,49 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Match;
-use App\Models\Participation;
-use App\Models\Team;
+use App\Models\TeamStat;
 use Carbon\Carbon;
+use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $sortMatches = request()->query('m');
+        //$sortMatches = "home_team_name";
+
         $currentDate = Carbon::now()->isoFormat('dddd D YYYY');
-        $teams = Team::with('matches')->get();
 
-        $participations = DB::table('matches')
-            ->select('participations.updated_at', 'match_id', 'teams.name', 'teams.slug', 'is_home', 'goals')
-            ->join('participations', 'matches.id', '=', 'match_id')
-            ->join('teams', 'participations.team_id', '=', 'teams.id')
-            ->get();
+        $teams = Team::All();
+        $matches = Match::with('teams')->get();
+        $teamsStats = DB::table('team_stats')->join('teams', 'team_stats.team_id', '=', 'teams.id')->orderBy('games', 'DESC')->get();
 
-        $matches = $this->fullMatch($participations);
+        $matches = $matches->sortBy($sortMatches);
 
-
-        return view('dashboard', compact('currentDate','teams', 'matches'));
+        return view('dashboard', compact('currentDate', 'matches', 'teams', 'teamsStats', 'sortMatches'));
     }
 
-    public function fullMatch($participations)
-    {
-        $matches = [];
-        $tmp = null;
-        foreach ($participations as $match) {
-            if(!$match->is_home){
-                $tmp = new \stdClass();
-                $tmp->date = $match->updated_at;
-                $tmp->away_team = $match->name;
-                $tmp->away_team_goals = $match->goals;
-                $matches[] = $tmp;
-            }else{
-                $tmp->home_team = $match->name;
-                $tmp->home_team_goals = $match->goals;
-            }
-
-        }
-
-        return $matches;
-    }
 }

@@ -1,93 +1,25 @@
 <section>
-    <h2>Standings</h2>
-    <table>
-        <thead>
+    <h2 class="mt-5 mb-2">Games played at {{$currentDate}}</h2>
+    <table class="table">
+        <thead class="thead-dark">
         <tr>
-            <td></td>
-            <th scope="col">Team</th>
-            <th scope="col">Games</th>
-            <th scope="col">Points</th>
-            <th scope="col">Wins</th>
-            <th scope="col">Losses</th>
-            <th scope="col">Draws</th>
-            <th scope="col">GF</th>
-            <th scope="col">GA</th>
-            <th scope="col">GD</th>
+            <th><a href="/?m=date">Date</a></th>
+            <th><a href="/?m=home_team_name">Home Team</a></th>
+            <th><a href="/?m=home_team_goals">Home Team Goals</a></th>
+            <th><a href="/?m=away_team_goals">Away Team Goals</a></th>
+            <th><a href="/?m=away_team_name">Away Team</a></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <th scope="row">Liverpool</th>
-            <td>4</td>
-            <td>12</td>
-            <td>4</td>
-            <td>0</td>
-            <td>0</td>
-            <td>10</td>
-            <td>0</td>
-            <td>10</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <th scope="row">Manchester City</th>
-            <td>4</td>
-            <td>10</td>
-            <td>3</td>
-            <td>0</td>
-            <td>1</td>
-            <td>12</td>
-            <td>4</td>
-            <td>8</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <th scope="row">Chelsea</th>
-            <td>4</td>
-            <td>8</td>
-            <td>2</td>
-            <td>0</td>
-            <td>2</td>
-            <td>9</td>
-            <td>5</td>
-            <td>4</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <th scope="row">Tottenham</th>
-            <td>4</td>
-            <td>7</td>
-            <td>2</td>
-            <td>1</td>
-            <td>1</td>
-            <td>7</td>
-            <td>7</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <th scope="row">Manchester United</th>
-            <td>4</td>
-            <td>2</td>
-            <td>1</td>
-            <td>2</td>
-            <td>1</td>
-            <td>2</td>
-            <td>6</td>
-            <td>-4</td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <th scope="row">Arsenal</th>
-            <td>4</td>
-            <td>0</td>
-            <td>0</td>
-            <td>4</td>
-            <td>0</td>
-            <td>2</td>
-            <td>12</td>
-            <td>-10</td>
-        </tr>
+        @foreach($matches as $match)
+            <tr>
+                <td>{{$match->date}}</td>
+                <td>{{$match->home_team_name}}</td>
+                <td>{{$match->home_team_goals}}</td>
+                <td>{{$match->away_team_goals}}</td>
+                <td>{{$match->away_team_name}}</td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
 </section>

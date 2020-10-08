@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreMatchRequest;
 use App\Models\Match;
+use App\Models\Team;
 use Illuminate\Http\Request;
 
 class MatchController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,8 @@ class MatchController extends Controller
      */
     public function index()
     {
-        //
+        $teams = Team::with('matches')->get();
+        return view('match.create', compact('teams'));
     }
 
     /**
@@ -33,9 +37,12 @@ class MatchController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreMatchRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        Match::create($validatedData);
+
+        return redirect('/');
     }
 
     /**

@@ -2,18 +2,22 @@
 
 namespace App\View\Components;
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\View\Component;
 
 class NewMatch extends Component
 {
+
+    public $teams;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($teams)
     {
-        //
+        $this->teams = $teams;
     }
 
     /**

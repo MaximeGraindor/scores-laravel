@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreTeamRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class StoreTeamRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:teams,name',
-            'slug' => 'required|max:3|unique:teams,slug'
+            'slug' => 'required|max:3|unique:teams,slug',
         ];
     }
 }
